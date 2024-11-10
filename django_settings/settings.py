@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     "django_countries",
     "drf_spectacular",
 
-    "src.account",
-    "src.airport",
-    "src.flight",
+    "src.backend.account",
+    "src.backend.airport",
+    "src.backend.flight",
 ]
 
 MIDDLEWARE = [
