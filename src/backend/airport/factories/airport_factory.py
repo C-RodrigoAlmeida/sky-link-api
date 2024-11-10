@@ -1,5 +1,5 @@
 import factory
-from src.airport.models import Airport
+from src.backend.airport.models import Airport
 from faker import Faker
 
 fake = Faker('pt_BR')

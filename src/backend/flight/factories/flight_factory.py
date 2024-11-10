@@ -1,6 +1,6 @@
 import factory
-from src.flight.models import Flight
-from src.flight.models import AirlineCompany
+from src.backend.flight.models import Flight
+from src.backend.flight.models import AirlineCompany
 from faker import Faker
 from datetime import timedelta
 
@@ -14,7 +14,7 @@ class FlightFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def create_seats(self, create, extracted, **kwargs):
-        from src.flight.factories import SeatFactory
+        from src.backend.flight.factories import SeatFactory
         
         if not create:
             return

@@ -1,6 +1,6 @@
 import factory
-from src.flight.models import Reservation
-from src.account.factories import UserFactory
+from src.backend.flight.models import Reservation
+from src.backend.account.factories import UserFactory
 from .seat_factory import SeatFactory
 import random
 

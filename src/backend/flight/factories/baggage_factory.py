@@ -1,6 +1,6 @@
 import factory
-from src.flight.factories.reservation_factory import ReservationFactory
-from src.flight.models import Baggage
+from src.backend.flight.factories.reservation_factory import ReservationFactory
+from src.backend.flight.models import Baggage
 
 
 class BaggageFactory(factory.django.DjangoModelFactory):

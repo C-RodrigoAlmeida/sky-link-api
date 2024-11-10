@@ -1,5 +1,5 @@
 import factory
-from src.airport.models import Gate
+from src.backend.airport.models import Gate
 from .airport_factory import AirportFactory
 
 class GateFactory(factory.django.DjangoModelFactory):

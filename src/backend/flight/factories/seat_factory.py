@@ -1,6 +1,6 @@
 import factory
-from src.flight.models import Seat
-from src.flight.factories.flight_factory import FlightFactory
+from src.backend.flight.models import Seat
+from src.backend.flight.factories.flight_factory import FlightFactory
 
 class SeatFactory(factory.django.DjangoModelFactory):
     class Meta:

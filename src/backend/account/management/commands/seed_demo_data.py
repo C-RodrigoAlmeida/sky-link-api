@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Q
-from src.account.factories import UserFactory, AddressFactory
-from src.flight.factories import (
+from src.backend.account.factories import UserFactory, AddressFactory
+from src.backend.flight.factories import (
     AirlineCompanyFactory, FlightFactory, ReservationFactory
 )
-from src.airport.factories import AirportFactory, GateFactory, ItineraryFactory
+from src.backend.airport.factories import AirportFactory, GateFactory, ItineraryFactory
 from tqdm import tqdm
 import random
 from datetime import timedelta, datetime

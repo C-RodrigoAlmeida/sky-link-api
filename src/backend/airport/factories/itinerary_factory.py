@@ -2,8 +2,8 @@ import factory
 from django.db import models
 from django.db.models import Q, F
 from datetime import timedelta
-from src.airport.models import Itinerary
-from src.flight.factories import FlightFactory
+from src.backend.airport.models import Itinerary
+from src.backend.flight.factories import FlightFactory
 from .gate_factory import GateFactory
 
 class ItineraryFactory(factory.django.DjangoModelFactory):

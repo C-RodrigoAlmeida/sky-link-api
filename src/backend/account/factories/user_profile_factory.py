@@ -1,5 +1,5 @@
 import factory
-from src.account.models import UserProfile
+from src.backend.account.models import UserProfile
 from .user_factory import UserFactory
 from faker import Faker
 

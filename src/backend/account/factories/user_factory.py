@@ -1,5 +1,5 @@
 import factory
-from src.account.models import User
+from src.backend.account.models import User
 from faker import Faker
 
 fake = Faker('pt_BR')

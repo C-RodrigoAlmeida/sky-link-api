@@ -1,5 +1,5 @@
 import factory
-from src.flight.models import AirlineCompany
+from src.backend.flight.models import AirlineCompany
 from faker import Faker
 
 fake = Faker('pt_BR')
