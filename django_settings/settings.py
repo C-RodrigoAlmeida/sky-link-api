@@ -38,8 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     
+    "django_filters",
+    "rest_framework",
     "django_countries",
-    
+    "drf_spectacular",
+
     "src.account",
     "src.airport",
     "src.flight",
@@ -129,3 +132,96 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = 'account.User'
+
+# Add these settings for drf-spectacular
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Skylink backend API',
+    'DESCRIPTION': 'API for Skylink backend, including authentication and authorization.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    },
+    
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ],
+    
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+    
+    'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
+    'DATE_FORMAT': '%Y-%m-%d',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Skylink backend API',
+    'DESCRIPTION': 'API for Skylink backend, including authentication and authorization.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+    
+    'SECURITY': [
+        {
+            'Bearer': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header'
+            }
+        }
+    ],
+    'SERVERS': [
+        {'url': 'http://localhost:8000', 'description': 'Local Development Server'},
+    ],
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'Authentication endpoints'},
+        {'name': 'Users', 'description': 'User management endpoints'},
+        {'name': 'Addresses', 'description': 'Address management endpoints'},
+        {'name': 'Airports', 'description': 'Airport management endpoints'},
+        {'name': 'Gates', 'description': 'Gate management endpoints'},
+        {'name': 'Airlines', 'description': 'Airline management endpoints'},
+        {'name': 'Flights', 'description': 'Flight management endpoints'},
+        {'name': 'Seats', 'description': 'Seat management endpoints'},
+        {'name': 'Reservations', 'description': 'Reservation management endpoints'},
+        {'name': 'Baggage', 'description': 'Baggage management endpoints'},
+    ],
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api/',
+} 
