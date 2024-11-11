@@ -1,0 +1,108 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1>{{ isEditMode ? 'Edit' : 'Add' }} Address</h1>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">Loading...</div>
+  
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <form [formGroup]="addressForm" (ngSubmit)="onSubmit()" class="address-form" *ngIf="!isLoading">
+    <div class="form-group">
+      <label for="street">Street*</label>
+      <input
+        type="text"
+        id="street"
+        formControlName="street"
+        class="form-control"
+        [class.is-invalid]="addressForm.get('street')?.invalid && addressForm.get('street')?.touched"
+      >
+      <div class="error-message" *ngIf="addressForm.get('street')?.invalid && addressForm.get('street')?.touched">
+        Street is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="neighborhood">Neighborhood*</label>
+      <input
+        type="text"
+        id="neighborhood"
+        formControlName="neighborhood"
+        class="form-control"
+        [class.is-invalid]="addressForm.get('neighborhood')?.invalid && addressForm.get('neighborhood')?.touched"
+      >
+      <div class="error-message" *ngIf="addressForm.get('neighborhood')?.invalid && addressForm.get('neighborhood')?.touched">
+        Neighborhood is required
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">City*</label>
+        <input
+          type="text"
+          id="city"
+          formControlName="city"
+          class="form-control"
+          [class.is-invalid]="addressForm.get('city')?.invalid && addressForm.get('city')?.touched"
+        >
+        <div class="error-message" *ngIf="addressForm.get('city')?.invalid && addressForm.get('city')?.touched">
+          City is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="state">State*</label>
+        <input
+          type="text"
+          id="state"
+          formControlName="state"
+          class="form-control"
+          [class.is-invalid]="addressForm.get('state')?.invalid && addressForm.get('state')?.touched"
+        >
+        <div class="error-message" *ngIf="addressForm.get('state')?.invalid && addressForm.get('state')?.touched">
+          State is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="country">Country Code (2 letters)*</label>
+        <input
+          type="text"
+          id="country"
+          formControlName="country"
+          class="form-control"
+          [class.is-invalid]="addressForm.get('country')?.invalid && addressForm.get('country')?.touched"
+          placeholder="BR"
+        >
+        <small class="form-text text-muted">Use 2-letter country code (e.g., BR for Brazil)</small>
+        <div class="error-message" *ngIf="addressForm.get('country')?.invalid && addressForm.get('country')?.touched">
+          <span *ngIf="addressForm.get('country')?.errors?.['required']">Country code is required</span>
+          <span *ngIf="addressForm.get('country')?.errors?.['pattern']">Must be 2 uppercase letters (e.g., BR)</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="zip_code">ZIP Code*</label>
+        <input
+          type="text"
+          id="zip_code"
+          formControlName="zip_code"
+          class="form-control"
+          [class.is-invalid]="addressForm.get('zip_code')?.invalid && addressForm.get('zip_code')?.touched"
+        >
+        <div class="error-message" *ngIf="addressForm.get('zip_code')?.invalid && addressForm.get('zip_code')?.touched">
+          ZIP Code is required
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="cancel-button" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="submit-button" [disabled]="addressForm.invalid || isLoading">
+        {{ isLoading ? 'Saving...' : (isEditMode ? 'Update' : 'Add') }} Address
+      </button>
+    </div>
+  </form>
+</div> 

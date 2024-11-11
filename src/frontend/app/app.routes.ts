@@ -22,6 +22,16 @@ export const routes: Routes = [
       .then(m => m.LoginComponent)
   },
   {
+    path: 'address/edit',
+    loadComponent: () => import('./features/account/components/address-form/address-form.component')
+      .then(m => m.AddressFormComponent)
+  },
+  {
+    path: 'address/edit/:id',
+    loadComponent: () => import('./features/account/components/address-form/address-form.component')
+      .then(m => m.AddressFormComponent)
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'

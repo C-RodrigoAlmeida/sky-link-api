@@ -11,12 +11,16 @@ export class UserService {
 
   constructor(private apiService: ApiService) {}
 
+  getCurrentUser(): Observable<User> {
+    return this.apiService.get<User>(`${this.path}me/`);
+  }
+
   getUsers(): Observable<User[]> {
     return this.apiService.get<User[]>(this.path);
   }
 
   getUser(id: number): Observable<User> {
-    return this.apiService.get<User>(`${this.path}/${id}`);
+    return this.apiService.get<User>(`${this.path}${id}/`);
   }
 
   createUser(user: Partial<User>): Observable<User> {

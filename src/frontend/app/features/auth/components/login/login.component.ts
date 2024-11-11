@@ -50,6 +50,10 @@ export class LoginComponent {
     }
   }
 
+  navigateToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
   get username() { return this.loginForm.get('username'); }
   get password() { return this.loginForm.get('password'); }
 } 

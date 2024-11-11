@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { AddressService } from '../../services/address.service';
 import { User } from '../../models/user.interface';
 import { Address } from '../../models/address.interface';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -27,31 +28,22 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-    this.loadAddresses();
   }
 
   private loadUserData(): void {
-    // Assuming we can get the current user's ID from somewhere
-    // You might need to modify this based on how you store the current user's ID
-    this.userService.getUser(1).subscribe({
-      next: (user) => {
+    this.userService.getCurrentUser().pipe(
+      switchMap(user => {
         this.user = user;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.error = 'Failed to load user data';
-        this.isLoading = false;
-      }
-    });
-  }
-
-  private loadAddresses(): void {
-    this.addressService.getAddresses().subscribe({
+        return this.addressService.getUserAddresses(user.id);
+      })
+    ).subscribe({
       next: (addresses) => {
         this.addresses = addresses;
+        this.isLoading = false;
       },
       error: (error) => {
-        this.error = 'Failed to load addresses';
+        this.error = 'Failed to load user data or addresses';
+        this.isLoading = false;
       }
     });
   }
@@ -59,4 +51,4 @@ export class ProfileComponent implements OnInit {
   navigateToAddressForm(): void {
     this.router.navigate(['/address/edit']);
   }
-} 
+}

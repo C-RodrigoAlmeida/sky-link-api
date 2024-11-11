@@ -73,4 +73,24 @@ label {
 .submit-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.register-button {
+  background: none;
+  border: none;
+  color: #0056b3;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s;
+}
+
+.register-button:hover {
+  color: #004494;
+  text-decoration: underline;
 } 
