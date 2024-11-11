@@ -1,0 +1,52 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>Profile</h1>
+    <button class="address-button" (click)="navigateToAddressForm()">
+      {{ addresses.length ? 'Update Address' : 'Add Address' }}
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">Loading...</div>
+  
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <div class="profile-content" *ngIf="!isLoading && !error">
+    <section class="user-info">
+      <h2>Personal Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Name:</label>
+          <span>{{ user?.first_name }} {{ user?.last_name }}</span>
+        </div>
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ user?.email }}</span>
+        </div>
+        <div class="info-item">
+          <label>Phone:</label>
+          <span>{{ user?.phone || 'Not provided' }}</span>
+        </div>
+        <div class="info-item">
+          <label>CPF:</label>
+          <span>{{ user?.cpf || 'Not provided' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="address-info">
+      <h2>Addresses</h2>
+      <div class="address-list" *ngIf="addresses.length > 0; else noAddress">
+        <div class="address-card" *ngFor="let address of addresses">
+          <p>{{ address.street }}</p>
+          <p>{{ address.neighborhood }}</p>
+          <p>{{ address.city }}, {{ address.state }}</p>
+          <p>{{ address.country }}</p>
+          <p>{{ address.zip_code }}</p>
+        </div>
+      </div>
+      <ng-template #noAddress>
+        <p class="no-address">No addresses found. Click the button above to add one.</p>
+      </ng-template>
+    </section>
+  </div>
+</div> 
