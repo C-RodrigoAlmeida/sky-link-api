@@ -431,3 +431,7 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/angular,node,python,django
+
+*.sqlite3
+db.sqlite3
+*.sqlite
