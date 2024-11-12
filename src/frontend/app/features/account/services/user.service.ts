@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import { User } from '../models/user.interface';
+import { PaginatedResponse } from '../../../core/models/paginated-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +13,15 @@ export class UserService {
   constructor(private apiService: ApiService) {}
 
   getCurrentUser(): Observable<User> {
-    return this.apiService.get<User>(`${this.path}me/`);
+    return this.apiService.getOne<User>(`${this.path}me/`);
   }
 
-  getUsers(): Observable<User[]> {
-    return this.apiService.get<User[]>(this.path);
+  getUsers(): Observable<PaginatedResponse<User>> {
+    return this.apiService.get<User>(this.path);
   }
 
   getUser(id: number): Observable<User> {
-    return this.apiService.get<User>(`${this.path}${id}/`);
+    return this.apiService.getOne<User>(`${this.path}${id}/`);
   }
 
   createUser(user: Partial<User>): Observable<User> {
@@ -28,10 +29,10 @@ export class UserService {
   }
 
   updateUser(id: number, user: Partial<User>): Observable<User> {
-    return this.apiService.put<User>(`${this.path}/${id}`, user);
+    return this.apiService.put<User>(`${this.path}${id}/`, user);
   }
 
   deleteUser(id: number): Observable<void> {
-    return this.apiService.delete<void>(`${this.path}/${id}`);
+    return this.apiService.delete<void>(`${this.path}${id}/`);
   }
 } 

@@ -16,14 +16,12 @@ export class AuthService {
     this.checkAuthStatus();
   }
 
-  // Function to retrieve CSRF token by making a GET request to the /csrf/ endpoint
   private getCsrfToken(): Observable<void> {
     return this.http.get(`${this.apiUrl}/csrf/`, { 
       withCredentials: true 
     }).pipe(map(() => void 0));
   }
 
-  // Helper function to retrieve a specific cookie by name
   private getCookie(name: string): string | null {
     const matches = document.cookie.match(new RegExp(
       `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
@@ -31,7 +29,6 @@ export class AuthService {
     return matches ? decodeURIComponent(matches[1]) : null;
   }
 
-  // Login function, first retrieves CSRF token, then performs login with credentials
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return this.getCsrfToken().pipe(
       switchMap(() => {
@@ -52,18 +49,28 @@ export class AuthService {
     );
   }
 
-  // Logout function to log out the user
   logout(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/logout/`, {}, { withCredentials: true })
-      .pipe(
-        tap(() => {
-          this.authStatus.next(false);
-          this.currentUser.next(null);
-        })
-      );
+    return this.getCsrfToken().pipe(
+      switchMap(() => {
+        const csrfToken = this.getCookie('csrftoken');
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken || ''
+        });
+        
+        return this.http.post<void>(`${this.apiUrl}/logout/`, {}, { 
+          headers,
+          withCredentials: true 
+        }).pipe(
+          tap(() => {
+            this.authStatus.next(false);
+            this.currentUser.next(null);
+          })
+        );
+      })
+    );
   }
 
-  // Function to check if the user is authenticated
   checkAuthStatus(): void {
     this.http.get<AuthResponse>(`${this.apiUrl}/session/`, { withCredentials: true })
       .subscribe({
@@ -78,17 +85,14 @@ export class AuthService {
       });
   }
 
-  // Returns the current authentication status as a boolean
   isAuthenticated(): boolean {
     return this.authStatus.value;
   }
 
-  // Observable to get authentication status
   getAuthStatus(): Observable<boolean> {
     return this.authStatus.asObservable();
   }
 
-  // Observable to get the current user
   getCurrentUser(): Observable<any> {
     return this.currentUser.asObservable();
   }

@@ -2,21 +2,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import { Flight } from '../models/flight.interface';
+import { PaginatedResponse } from '../../../core/models/paginated-response.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlightService {
-  private path = '/flights';
+  private path = '/flight/flights/';
 
   constructor(private apiService: ApiService) {}
 
-  getFlights(): Observable<Flight[]> {
-    return this.apiService.get<Flight[]>(this.path);
+  getFlights(): Observable<PaginatedResponse<Flight>> {
+    return this.apiService.get<Flight>(this.path);
   }
 
   getFlight(id: number): Observable<Flight> {
-    return this.apiService.get<Flight>(`${this.path}/${id}`);
+    return this.apiService.getOne<Flight>(`${this.path}/${id}`);
   }
 
   createFlight(flight: Partial<Flight>): Observable<Flight> {

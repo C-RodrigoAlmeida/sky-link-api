@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import { Address } from '../models/address.interface';
+import { PaginatedResponse } from '../../../core/models/paginated-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,12 @@ export class AddressService {
 
   constructor(private apiService: ApiService) {}
 
-  getAddresses(): Observable<Address[]> {
-    return this.apiService.get<Address[]>(this.path);
+  getAddresses(): Observable<PaginatedResponse<Address>> {
+    return this.apiService.get<Address>(this.path);
   }
 
   getAddress(id: number): Observable<Address> {
-    return this.apiService.get<Address>(`${this.path}${id}/`);
+    return this.apiService.getOne<Address>(`${this.path}${id}/`);
   }
 
   createAddress(address: Partial<Address>): Observable<Address> {
@@ -31,7 +32,7 @@ export class AddressService {
     return this.apiService.delete<void>(`${this.path}${id}/`);
   }
 
-  getUserAddresses(userId: number): Observable<Address[]> {
-    return this.apiService.get<Address[]>(`${this.path}user/${userId}/`);
+  getUserAddresses(userId: number): Observable<PaginatedResponse<Address>> {
+    return this.apiService.get<Address>(`${this.path}user/${userId}/`);
   }
 } 

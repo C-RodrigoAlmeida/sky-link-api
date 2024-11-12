@@ -6,6 +6,7 @@ import { AddressService } from '../../services/address.service';
 import { User } from '../../models/user.interface';
 import { Address } from '../../models/address.interface';
 import { switchMap } from 'rxjs';
+import { PaginatedResponse } from '../../../../core/models/paginated-response.interface';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +17,7 @@ import { switchMap } from 'rxjs';
 })
 export class ProfileComponent implements OnInit {
   user: User | null = null;
+  addressResponse: Address[] = [];
   addresses: Address[] = [];
   isLoading: boolean = true;
   error: string = '';
@@ -37,16 +39,25 @@ export class ProfileComponent implements OnInit {
         return this.addressService.getUserAddresses(user.id);
       })
     ).subscribe({
-      next: (addresses) => {
-        this.addresses = addresses;
+      next: (response) => {
+        if (Array.isArray(response)) {
+          this.addresses = response;
+        } else if (response && Array.isArray(response.results)) {
+          this.addresses = response.results; // Paginated response
+        } else {
+          this.addresses = [];
+        }
         this.isLoading = false;
       },
       error: (error) => {
         this.error = 'Failed to load user data or addresses';
+        this.addresses = [];
         this.isLoading = false;
+        console.error('Error loading user data:', error);
       }
     });
   }
+  
 
   navigateToAddressForm(): void {
     this.router.navigate(['/address/edit']);

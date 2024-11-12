@@ -17,7 +17,15 @@ export class NavbarComponent {
   ) {}
 
   logout(): void {
-    // Implement logout logic here
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.error('Error during logout:', error);
+        // Still navigate to login in case of error
+        this.router.navigate(['/login']);
+      }
+    });
   }
 } 

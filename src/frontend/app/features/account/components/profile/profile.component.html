@@ -1,8 +1,8 @@
 <div class="profile-container">
   <div class="profile-header">
     <h1>Profile</h1>
-    <button class="address-button" (click)="navigateToAddressForm()">
-      {{ addresses.length > 0 ? 'Update Address' : 'Add Address' }}
+    <button class="address-button" (click)="navigateToAddressForm()" *ngIf="!isLoading && addresses !== undefined">
+      {{ (addresses && addresses.length > 0) ? 'Update Address' : 'Add Address' }}
     </button>
   </div>
 
@@ -10,7 +10,7 @@
   
   <div class="error-message" *ngIf="error">{{ error }}</div>
 
-  <div class="profile-content" *ngIf="!isLoading">
+  <div class="profile-content" *ngIf="!isLoading && !error">
     <section class="user-info">
       <h2>Personal Information</h2>
       <div class="info-grid">
@@ -47,19 +47,17 @@
 
     <section class="address-info">
       <h2>Addresses</h2>
-      <div class="address-list" *ngIf="addresses.length > 0">
+
+      <div class="address-list" *ngIf="addresses && addresses.length > 0">
         <div class="address-card" *ngFor="let address of addresses">
-          <p>{{ address.street }}</p>
-          <p>{{ address.neighborhood }}</p>
-          <p>{{ 
-            [address.city, address.state]
-              .join(', ') 
-          }}</p>
-          <p>{{ address.country }}</p>
-          <p>{{ address.zip_code }}</p>
+          <p><strong>Street:</strong> {{ address.street }}</p>
+          <p><strong>Neighborhood:</strong> {{ address.neighborhood }}</p>
+          <p><strong>City/State:</strong> {{ address.city }}, {{ address.state }}</p>
+          <p><strong>Country:</strong> {{ address.country }}</p>
+          <p><strong>ZIP:</strong> {{ address.zip_code }}</p>
         </div>
       </div>
-      <p class="no-address" *ngIf="addresses.length === 0">
+      <p class="no-address" *ngIf="addresses && addresses.length === 0">
         No addresses found. Click the button above to add one.
       </p>
     </section>
