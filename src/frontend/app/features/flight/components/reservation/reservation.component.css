@@ -1,0 +1,74 @@
+.flight-details {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #64748b;
+  margin-right: 0.5rem;
+}
+
+.seat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.seat {
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seat:hover:not(.occupied) {
+  background-color: #e2e8f0;
+}
+
+.seat.selected {
+  background-color: #2563eb;
+  color: white;
+}
+
+.seat.occupied {
+  background-color: #ef4444;
+  color: white;
+  cursor: not-allowed;
+}
+
+.confirm-button {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.confirm-button:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+} 

@@ -15,3 +15,7 @@ class Seat(models.Model):
 
     def __str__(self) -> str:
         return f"{self.code} ({self.seat_class}) - ${self.price}"
+
+    @property
+    def is_occupied(self):
+        return self.reservations.exists()

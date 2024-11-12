@@ -1,6 +1,54 @@
 <div class="container mx-auto p-4">
   <h2 class="text-2xl font-bold mb-4">Available Flights</h2>
   
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="filter-container">
+      <div class="filter-header">
+        <h3>Search Filters</h3>
+        <div class="filter-actions">
+          <button class="filter-button secondary" (click)="resetFilters()">Clear</button>
+          <button class="filter-button primary" (click)="applyFilters()">Search</button>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <div class="filter-item">
+          <label>From</label>
+          <input type="text" [(ngModel)]="filters.origin">
+        </div>
+        
+        <div class="filter-item">
+          <label>To</label>
+          <input type="text" [(ngModel)]="filters.destination">
+        </div>
+
+        <div class="filter-item">
+          <label>Departure</label>
+          <input type="date" [(ngModel)]="filters.departure_date">
+        </div>
+        
+        <div class="filter-item">
+          <label>Return</label>
+          <input type="date" [(ngModel)]="filters.arrival_date">
+        </div>
+
+        <div class="filter-item">
+          <label>Airline</label>
+          <input type="text" [(ngModel)]="filters.airline">
+        </div>
+        
+        <div class="filter-item">
+          <label>Price Range</label>
+          <div class="price-inputs">
+            <input type="number" [(ngModel)]="filters.min_price" placeholder="Min">
+            <input type="number" [(ngModel)]="filters.max_price" placeholder="Max">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="loading" class="text-center">
     <p>Loading flights...</p>
   </div>
@@ -21,7 +69,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let flight of flights">
+      <tr *ngFor="let flight of flights | paginate: { 
+          itemsPerPage: pageSize,
+          currentPage: currentPage,
+          totalItems: totalCount 
+        }">
         <td>{{ flight.id }}</td>
         <td>{{ flight.airline }}</td>
         <td>{{ flight.origin }}</td>
@@ -37,6 +89,18 @@
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="!loading && totalCount > 0" class="pagination-controls">
+    <pagination-controls
+      (pageChange)="onPageChange($event)"
+      [responsive]="true"
+      [previousLabel]="'Previous'"
+      [nextLabel]="'Next'"
+      [screenReaderPaginationLabel]="'Pagination'"
+      [screenReaderPageLabel]="'page'"
+      [screenReaderCurrentLabel]="'You are on page'">
+    </pagination-controls>
+  </div>
 
   <div *ngIf="!loading && flights.length === 0" class="text-center py-8">
     <p class="text-gray-600">No flights available.</p>

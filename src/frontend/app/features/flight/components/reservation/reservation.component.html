@@ -1,0 +1,71 @@
+<div class="container mx-auto p-4">
+  <div *ngIf="loading" class="text-center">
+    <p>Loading flight details...</p>
+  </div>
+
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && flight" class="flight-details">
+    <h2 class="text-2xl font-bold mb-4">Flight Details</h2>
+    
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label">Flight Number:</span>
+        <span class="value">{{ flight.id }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Origin:</span>
+        <span class="value">{{ flight.origin }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Destination:</span>
+        <span class="value">{{ flight.destination }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Duration:</span>
+        <span class="value">{{ flight.duration }} minutes</span>
+      </div>
+    </div>
+
+    <div class="seats-section mt-8">
+      <h3 class="text-xl font-semibold mb-4">Select Your Seat</h3>
+      
+      <div class="seat-grid">
+        <div *ngFor="let seat of seats" 
+             class="seat"
+             [class.selected]="selectedSeat?.id === seat?.id"
+             [class.occupied]="seat?.reservations?.length ?? 0 > 0"
+             (click)="onSeatSelect(seat)">
+          <span class="seat-code">{{ seat.code }}</span>
+          <span class="seat-price">{{ seat.price | currency }}</span>
+          <span class="seat-class">{{ seat.seat_class }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insurance-section mt-6">
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" 
+               [checked]="includeInsurance"
+               (change)="toggleInsurance()"
+               class="form-checkbox">
+        <span>Add Travel Insurance (+$50)</span>
+      </label>
+    </div>
+
+    <div class="total-section mt-6">
+      <h3 class="text-xl font-semibold">Total Price: {{ getTotalPrice() | currency }}</h3>
+    </div>
+
+    <div class="actions mt-8">
+      <button 
+        (click)="onConfirmReservation()"
+        [disabled]="!selectedSeat"
+        class="confirm-button">
+        Confirm Reservation
+      </button>
+    </div>
+  </div>
+</div> 

@@ -37,7 +37,7 @@ export class LoginComponent {
       
       this.authService.login(credentials).subscribe({
         next: () => {
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/flights']);
         },
         error: (error) => {
           this.errorMessage = error.error?.message || 'Login failed. Please try again.';

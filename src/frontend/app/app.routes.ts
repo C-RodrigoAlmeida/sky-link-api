@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ProfileComponent } from './features/account/components/profile/profile.component';
 import { RegisterComponent } from './features/auth/components/register/register.component';
 import { FlightListComponent } from './features/flight/components/flight-list/flight-list.component';
+import { ReservationComponent } from './features/flight/components/reservation/reservation.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'flights',
     component: FlightListComponent
+  },
+  {
+    path: 'flights/:id/reserve',
+    component: ReservationComponent
   },
   {
     path: '',

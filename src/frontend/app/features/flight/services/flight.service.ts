@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import { Flight } from '../models/flight.interface';
 import { PaginatedResponse } from '../../../core/models/paginated-response.interface';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ export class FlightService {
 
   constructor(private apiService: ApiService) {}
 
-  getFlights(): Observable<PaginatedResponse<Flight>> {
-    return this.apiService.get<Flight>(this.path);
+  getFlights(params: HttpParams): Observable<PaginatedResponse<Flight>> {
+    return this.apiService.get<Flight>(this.path, params);
   }
 
   getFlight(id: number): Observable<Flight> {
-    return this.apiService.getOne<Flight>(`${this.path}/${id}`);
+    return this.apiService.getOne<Flight>(`${this.path}${id}/`);
   }
 
   createFlight(flight: Partial<Flight>): Observable<Flight> {
