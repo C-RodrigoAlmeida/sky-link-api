@@ -4,15 +4,21 @@ from rest_framework.response import Response
 from src.backend.account.models import User
 from src.backend.account.serializers.user import UserSerializer
 from src.backend.account.serializers.user_detail import UserDetailSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 @extend_schema(tags=['Users'])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action == 'create':
+            self.permission_classes = [AllowAny]
+        else:
+            self.permission_classes = [IsAuthenticated]
+
+        return super(UserViewSet, self).get_permissions()
     def get_serializer_class(self):
         if self.action == 'me':
             return UserDetailSerializer

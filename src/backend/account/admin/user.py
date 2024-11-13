@@ -7,7 +7,7 @@ from .address_inline import AddressInline
 class UserAdmin(UserAdmin):
     list_display = ('first_name', 'phone', 'cpf',)
     search_fields = ('username', 'email', 'cpf')
-    list_filter = ('is_active', 'is_staff')
+    list_filter = ('is_active', 'is_staff', 'is_superuser')
     inlines = [AddressInline]
     fieldsets = UserAdmin.fieldsets + (
         ('Custom Fields', {'fields': ('phone', 'cpf',)}),

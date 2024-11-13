@@ -30,18 +30,9 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
-    return this.getCsrfToken().pipe(
-      switchMap(() => {
-        const csrfToken = this.getCookie('csrftoken');
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken || ''
-        });
-        return this.http.post<AuthResponse>(`${this.apiUrl}/login/`, credentials, {
-          headers,
-          withCredentials: true
-        });
-      }),
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login/`, credentials, {
+      withCredentials: true
+    }).pipe(
       tap((response: AuthResponse) => {
         this.authStatus.next(true);
         this.currentUser.next(response.user);

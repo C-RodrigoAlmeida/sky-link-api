@@ -4,7 +4,7 @@ from src.backend.account.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password',
                  'phone', 'cpf', 'birth_date', 'passport_number']
         read_only_fields = ['id']
         extra_kwargs = {

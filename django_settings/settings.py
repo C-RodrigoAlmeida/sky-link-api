@@ -40,7 +40,6 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = 'Lax'
-CORS_ORIGIN_WHITELIST = ['http://localhost:4200'] 
 
 # Optional: If you need to allow specific headers
 CORS_ALLOW_HEADERS = [
