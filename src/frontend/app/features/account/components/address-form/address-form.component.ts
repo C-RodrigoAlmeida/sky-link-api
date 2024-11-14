@@ -79,6 +79,6 @@ export class AddressFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/account/addresses']);
+    this.router.navigate(['/profile']);
   }
 } 

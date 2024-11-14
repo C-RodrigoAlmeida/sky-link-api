@@ -1,65 +1,89 @@
-<div class="profile-container">
-  <div class="profile-header">
-    <h1>Profile</h1>
-    <button class="address-button" (click)="navigateToAddressForm()" *ngIf="!isLoading && addresses !== undefined">
-      {{ (addresses && addresses.length > 0) ? 'Update Address' : 'Add Address' }}
-    </button>
-  </div>
-
+<div class="container" style="padding: 20px;">
   <div class="loading" *ngIf="isLoading">Loading...</div>
   
   <div class="error-message" *ngIf="error">{{ error }}</div>
-
-  <div class="profile-content" *ngIf="!isLoading && !error">
-    <section class="user-info">
-      <h2>Personal Information</h2>
-      <div class="info-grid">
-        <div class="info-item">
-          <label>Username:</label>
-          <span>{{ user?.username ?? 'Not provided' }}</span>
+  <div>
+    <div class="profile-content" *ngIf="!isLoading && !error">
+      <section class="user-info">
+        <div class="header">
+          <h2 style="margin-top: 20px;">Personal Information</h2>
+          <button class="address-button" *ngIf="!isLoading && addresses !== undefined">
+            Edit profile
+          </button>
         </div>
-        <div class="info-item">
-          <label>Name:</label>
-          <span>{{ (user?.first_name || '') + ' ' + (user?.last_name || '') || 'Not provided' }}</span>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Username:</label>
+            <span>{{ user?.username ?? 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Name:</label>
+            <span>{{ (user?.first_name || '') + ' ' + (user?.last_name || '') || 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Email:</label>
+            <span>{{ user?.email ?? 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Phone:</label>
+            <span>{{ user?.phone ?? 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>CPF:</label>
+            <span>{{ user?.cpf ?? 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Birth Date:</label>
+            <span>{{ user?.birth_date ?? 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Passport Number:</label>
+            <span>{{ user?.passport_number ?? 'Not provided' }}</span>
+          </div>
         </div>
-        <div class="info-item">
-          <label>Email:</label>
-          <span>{{ user?.email ?? 'Not provided' }}</span>
-        </div>
-        <div class="info-item">
-          <label>Phone:</label>
-          <span>{{ user?.phone ?? 'Not provided' }}</span>
-        </div>
-        <div class="info-item">
-          <label>CPF:</label>
-          <span>{{ user?.cpf ?? 'Not provided' }}</span>
-        </div>
-        <div class="info-item">
-          <label>Birth Date:</label>
-          <span>{{ user?.birth_date ?? 'Not provided' }}</span>
-        </div>
-        <div class="info-item">
-          <label>Passport Number:</label>
-          <span>{{ user?.passport_number ?? 'Not provided' }}</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="address-info">
-      <h2>Addresses</h2>
-
-      <div class="address-list" *ngIf="addresses && addresses.length > 0">
-        <div class="address-card" *ngFor="let address of addresses">
-          <p><strong>Street:</strong> {{ address.street }}</p>
-          <p><strong>Neighborhood:</strong> {{ address.neighborhood }}</p>
-          <p><strong>City/State:</strong> {{ address.city }}, {{ address.state }}</p>
-          <p><strong>Country:</strong> {{ address.country }}</p>
-          <p><strong>ZIP:</strong> {{ address.zip_code }}</p>
-        </div>
-      </div>
-      <p class="no-address" *ngIf="addresses && addresses.length === 0">
-        No addresses found. Click the button above to add one.
-      </p>
-    </section>
+        <div style="margin-top: 20px;"></div>
+      </section>
+    </div> <!-- End of profile container -->
   </div>
-</div> 
+</div>
+<div class="container" style="padding: 20px;">
+  <section class="address-info">
+    <div class="header">
+      <h2 style="margin-top: 20px;">Addresses</h2>
+      <button class="address-button" (click)="navigateToAddressForm()" *ngIf="!isLoading && addresses !== undefined">
+        New address
+      </button>
+    </div>
+    <table *ngIf="addresses && addresses.length > 0" class="flight-table" style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Street</th>
+          <th>Neighborhood</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Country</th>
+          <th>ZIP</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let address of addresses">
+          <td>{{ address.street }}</td>
+          <td>{{ address.neighborhood }}</td>
+          <td>{{ address.city }}</td>
+          <td>{{ address.state }}</td>
+          <td>{{ address.country }}</td>
+          <td>{{ address.zip_code }}</td>
+          <td>
+            <button (click)="onEditAddress(address)" class="select-button">Edit</button>
+            <button (click)="onDeleteAddress(address)" class="select-button">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="no-address" *ngIf="addresses && addresses.length === 0" style="margin-top: 20px;">
+      No addresses found. Click the button above to add one.
+    </p>
+  </section>
+</div> <!-- End of addresses container -->

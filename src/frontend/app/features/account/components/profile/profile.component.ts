@@ -6,7 +6,6 @@ import { AddressService } from '../../services/address.service';
 import { User } from '../../models/user.interface';
 import { Address } from '../../models/address.interface';
 import { switchMap } from 'rxjs';
-import { PaginatedResponse } from '../../../../core/models/paginated-response.interface';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +16,6 @@ import { PaginatedResponse } from '../../../../core/models/paginated-response.in
 })
 export class ProfileComponent implements OnInit {
   user: User | null = null;
-  addressResponse: Address[] = [];
   addresses: Address[] = [];
   isLoading: boolean = true;
   error: string = '';
@@ -40,13 +38,7 @@ export class ProfileComponent implements OnInit {
       })
     ).subscribe({
       next: (response) => {
-        if (Array.isArray(response)) {
-          this.addresses = response;
-        } else if (response && Array.isArray(response.results)) {
-          this.addresses = response.results; // Paginated response
-        } else {
-          this.addresses = [];
-        }
+        this.addresses = Array.isArray(response) ? response : [];
         this.isLoading = false;
       },
       error: (error) => {
@@ -57,9 +49,26 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-  
 
   navigateToAddressForm(): void {
     this.router.navigate(['/address/edit']);
+  }
+
+  onEditAddress(address: Address): void {
+    this.router.navigate(['/address/edit', address.id]);
+  }
+
+  onDeleteAddress(address: Address): void {
+    if (confirm('Are you sure you want to delete this address?')) {
+      this.addressService.deleteAddress(address.id).subscribe({
+        next: () => {
+          this.addresses = this.addresses.filter(a => a.id !== address.id);
+        },
+        error: (error) => {
+          this.error = 'Failed to delete address';
+          console.error('Error deleting address:', error);
+        }
+      });
+    }
   }
 }
