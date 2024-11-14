@@ -30,14 +30,16 @@
 }
 
 .seat {
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
+  width: 18px;
+  height: 18px;
+  /* padding: 0.4rem; */
+  font-size: 0.7rem;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
   cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  transition: background-color 0.3s;
 }
 
 .seat:hover:not(.occupied) {
@@ -45,7 +47,7 @@
 }
 
 .seat.selected {
-  background-color: #2563eb;
+  background-color: #2563eb !important;
   color: white;
 }
 
@@ -71,4 +73,76 @@
 .confirm-button:disabled {
   background-color: #94a3b8;
   cursor: not-allowed;
+}
+
+.occupied {
+  background-color: red; /* Example color for occupied seats */
+}
+
+.available {
+  background-color: green; /* Example color for available seats */
+}
+
+.empty {
+  background-color: gray; /* Example color for empty seats */
+}
+
+.seat-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px; /* Add padding for better spacing */
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.seats {
+  display: flex;
+  gap: 2px;
+}
+
+/* Corridor spacing between C and D */
+.seat-row .seats .seat:nth-child(3) {
+  margin-right: 20px; /* Corridor spacing */
+}
+
+/* Larger vertical spacing for rows transitioning between seat types */
+.large-spacing {
+  margin-top: 20px; /* Adjust this value as needed for larger spacing */
+}
+
+.seat {
+  width: 30px; /* Adjust width as needed */
+  height: 23px; /* Adjust height as needed */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.seat.occupied {
+  background-color: #ff4d4d; /* Red for occupied */
+  cursor: not-allowed;
+}
+
+.seat.available {
+  background-color: #4caf50; /* Green for available */
+}
+
+.seat.empty {
+  background-color: #e0e0e0; /* Grey for empty */
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 } 

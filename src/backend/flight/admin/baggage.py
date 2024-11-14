@@ -3,5 +3,4 @@ from src.backend.flight.models import Baggage
 
 @admin.register(Baggage)
 class BaggageAdmin(admin.ModelAdmin):
-    list_display = ('reservation', 'max_weight', 'price')
-    list_filter = ('max_weight',)
+    list_display = ('id', 'reservation__seat__code', 'reservation__seat__flight__id', 'baggage_type__label')

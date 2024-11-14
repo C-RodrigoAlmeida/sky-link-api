@@ -6,5 +6,5 @@ export interface Seat {
   seat_class: string;
   price: number;
   code: string;
-  reservations?: Reservation[];
+  is_occupied: boolean;
 } 

@@ -2,12 +2,13 @@ from django.core.management.base import BaseCommand
 from django.db.models import Q
 from src.backend.account.factories import UserFactory, AddressFactory
 from src.backend.flight.factories import (
-    AirlineCompanyFactory, FlightFactory, ReservationFactory
+    AirlineCompanyFactory, FlightFactory, ReservationFactory, BaggageFactory, BaggageTypeFactory
 )
 from src.backend.airport.factories import AirportFactory, GateFactory, ItineraryFactory
 from tqdm import tqdm
 import random
 from datetime import timedelta, datetime
+from django.utils.timezone import make_aware
 
 class Command(BaseCommand):
     help = 'Seeds the database with demo data'
@@ -17,6 +18,8 @@ class Command(BaseCommand):
         self.stdout.write('Deleting existing data...')
         ReservationFactory._meta.model.objects.all().delete()
         ItineraryFactory._meta.model.objects.all().delete()
+        BaggageFactory._meta.model.objects.all().delete()
+        BaggageTypeFactory._meta.model.objects.all().delete()
         FlightFactory._meta.model.objects.all().delete()
         GateFactory._meta.model.objects.all().delete()
         AirportFactory._meta.model.objects.all().delete()
@@ -39,12 +42,14 @@ class Command(BaseCommand):
         for airport in tqdm(airports, desc="Creating Airports and Gates"):
             GateFactory.create_batch(10, airport=airport)
 
+        baggage_types = BaggageTypeFactory.create_batch(3)
+
         flights = []
         for airline in tqdm(airlines, desc="Creating Flights"):
-            flights.extend(FlightFactory.create_batch(1, airline=airline))
+            flights.extend(FlightFactory.create_batch(5, airline=airline))
 
         for flight in tqdm(flights, desc="Creating Itineraries"):
-            future_departure_time = datetime.now() + timedelta(days=random.randint(1, 30))
+            future_departure_time = make_aware(datetime.now() + timedelta(days=random.randint(1, 30)))
             
             origin_itinerary = ItineraryFactory.create(
                 flight=flight,
@@ -66,7 +71,13 @@ class Command(BaseCommand):
             origin_itinerary.expected_departure_time = None
             origin_itinerary.save()
 
-        for _ in tqdm(range(100), desc="Creating Reservations"):
-            ReservationFactory.create(user=users[_ % len(users)], seat=flights[_ % len(flights)].seats.first())
+        for _ in tqdm(range(2000), desc="Creating Reservations"):
+            reservation = ReservationFactory.create(
+                user=random.choice(users), 
+                seat=random.choice(flights).seats.filter(reservation__id__isnull=True).order_by('?').first()
+            )
+
+            for _ in range(random.randint(0, 4)):
+                BaggageFactory(reservation=reservation, baggage_type=random.choice(baggage_types))
 
         self.stdout.write(self.style.SUCCESS('Successfully seeded demo data')) 

@@ -14,6 +14,7 @@ from src.backend.account.serializers.auth import (
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 
+@extend_schema(tags=['Authentication'])
 @api_view(['GET'])
 @ensure_csrf_cookie
 def get_csrf_token(request):
@@ -30,12 +31,14 @@ class LoginView(APIView):
         responses={200: AuthResponseSerializer}
     )
     def post(self, request):
+        print("Login attempt with data:", request.data)
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
         user = serializer.validated_data['user']
         login(request, user)
         
+        print("User logged in:", user)
         return Response({
             'user': UserAuthSerializer(user).data
         })

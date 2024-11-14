@@ -1,8 +1,38 @@
 from django.db import models
+
+
 from .airline_company import AirlineCompany
 from django.utils.functional import cached_property
+from django.db.models import Subquery, OuterRef
+
+class FlightQuerySet(models.QuerySet):
+    def annotate_departure_time(self):
+        from src.backend.airport.models.itinerary import Itinerary
+
+        return self.annotate(
+            annotated_expected_departure_time=Subquery(
+                Itinerary.objects.filter(
+                    flight_id=OuterRef('id'), 
+                    expected_arrival_time__isnull=True
+                ).values('expected_departure_time')[:1]
+            )
+        )
+
+    def annotate_arrival_time(self):
+        from src.backend.airport.models.itinerary import Itinerary
+
+        return self.annotate(
+            annotated_expected_arrival_time=Subquery(
+                Itinerary.objects.filter(
+                    flight_id=OuterRef('id'), 
+                    expected_departure_time__isnull=True
+                ).values('expected_arrival_time')[:1]
+            )
+        )
 
 class Flight(models.Model):
+    objects = FlightQuerySet.as_manager()
+
     airline = models.ForeignKey(
         AirlineCompany, on_delete=models.CASCADE, related_name="flights"
     )

@@ -1,5 +1,6 @@
 from django.db import models
 from .flight import Flight
+from django.utils.functional import cached_property
 
 class Seat(models.Model):
     flight = models.ForeignKey(
@@ -16,6 +17,6 @@ class Seat(models.Model):
     def __str__(self) -> str:
         return f"{self.code} ({self.seat_class}) - ${self.price}"
 
-    @property
-    def is_occupied(self):
-        return self.reservations.exists()
+    @cached_property
+    def is_occupied(self) -> bool:
+        return bool(getattr(self, 'reservation', None))

@@ -4,7 +4,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from src.backend.account.models import Address
 from src.backend.account.serializers.address import AddressSerializer
+from drf_spectacular.utils import extend_schema
 
+@extend_schema(tags=['Addresses'])
 class AddressViewSet(viewsets.ModelViewSet):
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated]

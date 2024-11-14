@@ -6,8 +6,6 @@ import { SeatService } from '../../services/seat.service';
 import { ReservationService } from '../../services/reservation.service';
 import { Flight } from '../../models/flight.interface';
 import { Seat } from '../../models/seat.interface';
-import { switchMap, forkJoin } from 'rxjs';
-
 @Component({
   selector: 'app-reservation',
   standalone: true,
@@ -22,6 +20,7 @@ export class ReservationComponent implements OnInit {
   error: string | null = null;
   selectedSeat: Seat | null = null;
   includeInsurance = false;
+  seatLayout: Seat[][] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -42,22 +41,30 @@ export class ReservationComponent implements OnInit {
     this.loadFlightDetails(flightId);
   }
 
-  private loadFlightDetails(flightId: number): void {
-    forkJoin({
-      flight: this.flightService.getFlight(flightId),
-      seats: this.seatService.getSeats()
-    }).subscribe({
-      next: (response) => {
-        this.flight = response.flight;
-        this.seats = response.seats.results.filter(seat => seat.flight === flightId);
+  loadFlightDetails(flightId: number): void {
+    this.flightService.getFlight(flightId).subscribe({
+      next: (flight) => {
+        this.flight = flight;
+        this.seats = flight.seats;
+        this.seatLayout = this.generateSeatLayout(this.seats);
         this.loading = false;
       },
       error: (error) => {
         this.error = 'Failed to load flight details';
-        this.loading = false;
         console.error('Error loading flight details:', error);
+        this.loading = false;
       }
     });
+  }
+
+  generateSeatLayout(seats: Seat[]): Seat[][] {
+    const layout: Seat[][] = [];
+    const seatsPerRow = 6;
+    
+    for (let i = 0; i < seats.length; i += seatsPerRow) {
+      layout.push(seats.slice(i, i + seatsPerRow));
+    }
+    return layout;
   }
 
   onSeatSelect(seat: Seat): void {
@@ -71,7 +78,7 @@ export class ReservationComponent implements OnInit {
   getTotalPrice(): number {
     let total = this.selectedSeat?.price || 0;
     if (this.includeInsurance) {
-      total += 50; // Example insurance price
+      total += 50;
     }
     return total;
   }
@@ -96,5 +103,10 @@ export class ReservationComponent implements OnInit {
         console.error('Error creating reservation:', error);
       }
     });
+  }
+
+  isTransitionRow(rowIndex: number): boolean {
+    // Assuming the first two rows are First Class, next four are Business, and the rest are Economy
+    return (rowIndex === 2 || rowIndex === 6); // Adjust based on your row indexing
   }
 } 
