@@ -6,6 +6,8 @@ import { SeatService } from '../../services/seat.service';
 import { ReservationService } from '../../services/reservation.service';
 import { Flight } from '../../models/flight.interface';
 import { Seat } from '../../models/seat.interface';
+import { Itinerary } from '../../models/itinerary.interface';
+
 @Component({
   selector: 'app-reservation',
   standalone: true,
@@ -16,6 +18,7 @@ import { Seat } from '../../models/seat.interface';
 export class ReservationComponent implements OnInit {
   flight: Flight | null = null;
   seats: Seat[] = [];
+  itineraries: Itinerary[] = [];
   loading = true;
   error: string | null = null;
   selectedSeat: Seat | null = null;
@@ -47,6 +50,7 @@ export class ReservationComponent implements OnInit {
         this.flight = flight;
         this.seats = flight.seats;
         this.seatLayout = this.generateSeatLayout(this.seats);
+        this.itineraries = flight.itineraries;
         this.loading = false;
       },
       error: (error) => {
