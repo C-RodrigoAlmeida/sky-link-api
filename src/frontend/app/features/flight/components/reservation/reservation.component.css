@@ -1,5 +1,5 @@
 .flight-details {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .confirm-button:disabled {
-  background-color: #94a3b8;
+    background-color: #94a3b8;
   cursor: not-allowed;
 }
 
@@ -145,4 +145,72 @@
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.flight-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  margin-bottom: 2rem;
+}
+
+.flight-table thead {
+  background-color: #f8fafc;
+}
+
+.flight-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.flight-table td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+.flight-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.flight-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status badge styles for itinerary types */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-badge.origin {
+  background-color: #22c55e;
+  color: white;
+}
+
+.status-badge.destination {
+  background-color: #ef4444;
+  color: white;
+}
+
+.status-badge.stopover {
+  background-color: #64748b;
+  color: white;
+}
+
+.itinerary-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
 } 

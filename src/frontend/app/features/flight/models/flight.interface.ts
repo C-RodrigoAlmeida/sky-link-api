@@ -1,3 +1,4 @@
+import { Itinerary } from "./itinerary.interface";
 import { Seat } from "./seat.interface";
 
 export interface Flight {
@@ -9,4 +10,5 @@ export interface Flight {
   departure: Date;
   arrival: Date;
   seats: Seat[];
+  itineraries: Itinerary[];
 } 

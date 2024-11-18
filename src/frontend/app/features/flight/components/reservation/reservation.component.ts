@@ -80,10 +80,9 @@ export class ReservationComponent implements OnInit {
   }
 
   getTotalPrice(): number {
-    let total = this.selectedSeat?.price || 0;
-    if (this.includeInsurance) {
-      total += 50;
-    }
+    let total = Number(this.selectedSeat?.price) || 0;
+    if (this.includeInsurance) total += 50;
+    
     return total;
   }
 

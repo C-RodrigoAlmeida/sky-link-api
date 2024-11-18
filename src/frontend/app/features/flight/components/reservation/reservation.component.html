@@ -67,6 +67,35 @@
           </div>
         </div>
 
+        <div class="itinerary-section mt-6">
+          <h3 class="text-xl font-semibold mb-4">Flight Itinerary</h3>
+          
+          <table class="flight-table">
+            <thead>
+              <tr>
+                <th>Airport</th>
+                <th>Gate</th>
+                <th>Type</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itinerary of itineraries">
+                <td>{{ itinerary.gate.airport.name }}</td>
+                <td>Gate {{ itinerary.gate.code }}</td>
+                <td>
+                  <span *ngIf="itinerary.is_origin" class="status-badge origin">Origin</span>
+                  <span *ngIf="itinerary.is_destination" class="status-badge destination">Destination</span>
+                  <span *ngIf="!itinerary.is_origin && !itinerary.is_destination" class="status-badge stopover">Stopover</span>
+                </td>
+                <td>{{ itinerary.expected_departure_time | date:'short' }}</td>
+                <td>{{ itinerary.expected_arrival_time | date:'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div class="insurance-section mt-6">
           <label class="flex items-center space-x-2">
             <input type="checkbox" 
