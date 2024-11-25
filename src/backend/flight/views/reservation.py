@@ -10,5 +10,8 @@ class ReservationViewSet(viewsets.ModelViewSet):
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
+    def get_queryset(self) -> Reservation:
         return Reservation.objects.filter(user=self.request.user) 
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

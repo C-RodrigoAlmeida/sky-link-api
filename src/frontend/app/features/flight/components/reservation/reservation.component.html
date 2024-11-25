@@ -76,8 +76,8 @@
                 <th>Airport</th>
                 <th>Gate</th>
                 <th>Type</th>
-                <th>Departure Time</th>
                 <th>Arrival Time</th>
+                <th>Departure Time</th>
               </tr>
             </thead>
             <tbody>
@@ -89,8 +89,8 @@
                   <span *ngIf="itinerary.is_destination" class="status-badge destination">Destination</span>
                   <span *ngIf="!itinerary.is_origin && !itinerary.is_destination" class="status-badge stopover">Stopover</span>
                 </td>
-                <td>{{ itinerary.expected_departure_time | date:'short' }}</td>
                 <td>{{ itinerary.expected_arrival_time | date:'short' }}</td>
+                <td>{{ itinerary.expected_departure_time | date:'short' }}</td>
               </tr>
             </tbody>
           </table>
