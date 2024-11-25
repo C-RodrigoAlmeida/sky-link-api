@@ -5,7 +5,7 @@ export interface BaseReservation {
   insurance: boolean;
 } 
 
-export interface Reservation {
+export interface Reservation extends BaseReservation {
   seat: number;
 }
 
