@@ -46,6 +46,30 @@
     </div> <!-- End of profile container -->
   </div>
 </div>
+
+<div class="container" style="padding: 20px;">
+  <div class="credit-card-info">
+    <div class="header">
+      <h3 style="margin-top: 20px;">Credit Cards</h3>
+      <button class="address-button" (click)="navigateToCreditCardForm()" *ngIf="!isLoadingCards">
+        New Credit Card
+      </button>
+    </div>
+    <div class="loading" *ngIf="isLoadingCards">Loading credit cards...</div>
+    <div class="error-message" *ngIf="errorCards">{{ errorCards }}</div>
+    <p class="no-address" *ngIf="addresses && addresses.length === 0" style="margin-top: 20px;">
+      No credit cards found. Click the button above to add one.
+    </p>
+    <ul *ngIf="!isLoadingCards && creditCards.length > 0">
+      <li *ngFor="let card of creditCards">
+        {{ card.cardholder_name }} - **** **** **** {{ card.card_number.slice(-4) }}
+        <!-- <button (click)="onEditCreditCard(card)">Edit</button>
+        <button (click)="onDeleteCreditCard(card)">Delete</button> -->
+      </li>
+    </ul>
+  </div>
+</div>
+
 <div class="container" style="padding: 20px;">
   <section class="address-info">
     <div class="header">

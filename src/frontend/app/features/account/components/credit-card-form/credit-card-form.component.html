@@ -1,0 +1,29 @@
+<div class="form-container">
+  <h1>{{ isEditMode ? 'Edit' : 'Add' }} Credit Card</h1>
+  <div class="loading" *ngIf="isLoading">Loading...</div>
+  <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <form [formGroup]="creditCardForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="card_number">Card Number*</label>
+      <input type="text" id="card_number" formControlName="card_number" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="cardholder_name">Cardholder Name*</label>
+      <input type="text" id="cardholder_name" formControlName="cardholder_name" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="expiration_date">Expiration Date*</label>
+      <input type="date" id="expiration_date" formControlName="expiration_date" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="cvv">CVV*</label>
+      <input type="text" id="cvv" formControlName="cvv" class="form-control" required>
+    </div>
+    <div class="form-actions">
+      <button type="button" (click)="onCancel()">Cancel</button>
+      <button type="submit" [disabled]="creditCardForm.invalid || isLoading">
+        {{ isLoading ? 'Saving...' : (isEditMode ? 'Update' : 'Add') }} Credit Card
+      </button>
+    </div>
+  </form>
+</div> 

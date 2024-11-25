@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "src.backend.account",
     "src.backend.airport",
     "src.backend.flight",
+    "src.backend.payment",
 ]
 
 MIDDLEWARE = [

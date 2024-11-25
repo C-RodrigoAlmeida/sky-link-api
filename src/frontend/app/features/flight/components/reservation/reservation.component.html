@@ -96,6 +96,46 @@
           </table>
         </div>
 
+        <div>
+          <h3 class="text-xl font-semibold mt-6">Baggage Listing</h3>
+          <table class="flight-table">
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Max Weight</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let baggage of baggages; let idx = index">
+                <td>{{ baggage.baggage_type.label }}</td>
+                <td>{{ baggage.baggage_type.max_weight }}</td>
+                <td>{{ baggage.baggage_type.price }}</td>
+                <td>
+                  <button (click)="removeBaggage(idx)" class="cancel-button">Remove</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="custom-select">
+                    <select #baggageSelect>
+                      <option *ngFor="let baggageType of baggageTypes" [value]="baggageType.id">
+                        {{ baggageType.label }}
+                      </option>
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <button (click)="addBaggage(baggageSelect.value)" class="confirm-button">
+                    Add Baggage
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div class="insurance-section mt-6">
           <label class="flex items-center space-x-2">
             <input type="checkbox" 

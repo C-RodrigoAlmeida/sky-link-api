@@ -33,4 +33,5 @@ urlpatterns = [
     path('api/account/', include('src.backend.account.urls')),
     path('api/airport/', include('src.backend.airport.urls')),
     path('api/flight/', include('src.backend.flight.urls')),
+    path('api/payment/', include('src.backend.payment.urls'))
 ]

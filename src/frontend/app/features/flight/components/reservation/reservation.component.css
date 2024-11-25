@@ -75,6 +75,24 @@
   cursor: not-allowed;
 }
 
+.cancel-button {
+  background-color: #ef4444; /* Red for cancel */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background-color: #dc2626; /* Darker red on hover */
+}
+
+.cancel-button:disabled {
+  background-color: #94a3b8; /* Gray for disabled state */
+  cursor: not-allowed;
+}
+
 .occupied {
   background-color: red; /* Example color for occupied seats */
 }
@@ -213,4 +231,33 @@
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid #e2e8f0;
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none; /* Remove default arrow */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,5" fill="%23333"/></svg>'); /* Custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+}
+
+.custom-select select:focus {
+  outline: none;
+  border-color: #007bff; /* Change border color on focus */
+}
+
+.custom-select select:hover {
+  border-color: #007bff; /* Change border color on hover */
 } 

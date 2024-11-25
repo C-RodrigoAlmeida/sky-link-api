@@ -6,6 +6,8 @@ import { AddressService } from '../../services/address.service';
 import { User } from '../../models/user.interface';
 import { Address } from '../../models/address.interface';
 import { switchMap } from 'rxjs';
+import { CreditCardService } from '../../services/credit-card.service';
+import { CreditCard } from '../../models/credit-card.interface';
 
 @Component({
   selector: 'app-profile',
@@ -19,15 +21,20 @@ export class ProfileComponent implements OnInit {
   addresses: Address[] = [];
   isLoading: boolean = true;
   error: string = '';
+  creditCards: CreditCard[] = [];
+  isLoadingCards: boolean = true;
+  errorCards: string = '';
 
   constructor(
     private userService: UserService,
     private addressService: AddressService,
+    private creditCardService: CreditCardService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadUserData();
+    this.loadCreditCards();
   }
 
   private loadUserData(): void {
@@ -46,6 +53,20 @@ export class ProfileComponent implements OnInit {
         this.addresses = [];
         this.isLoading = false;
         console.error('Error loading user data:', error);
+      }
+    });
+  }
+
+  private loadCreditCards(): void {
+    this.creditCardService.getUserCreditCards().subscribe({
+      next: (cards) => {
+        this.creditCards = cards.results;
+        this.isLoadingCards = false;
+      },
+      error: (error) => {
+        this.errorCards = 'Failed to load credit cards';
+        this.isLoadingCards = false;
+        console.error('Error loading credit cards:', error);
       }
     });
   }
@@ -70,5 +91,11 @@ export class ProfileComponent implements OnInit {
         }
       });
     }
+  }
+
+
+
+  navigateToCreditCardForm(): void {
+    this.router.navigate(['/credit-card/edit']);
   }
 }

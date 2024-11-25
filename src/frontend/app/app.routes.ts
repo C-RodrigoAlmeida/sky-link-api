@@ -5,6 +5,7 @@ import { FlightListComponent } from './features/flight/components/flight-list/fl
 import { ReservationComponent } from './features/flight/components/reservation/reservation.component';
 import { ReservationsComponent } from './features/flight/components/reservations/reservations.component';
 import { ReservationDetailComponent } from './features/flight/components/reservation-detail/reservation-detail.component';
+import { CreditCardFormComponent } from './features/account/components/credit-card-form/credit-card-form.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,14 @@ export const routes: Routes = [
     path: 'address/edit/:id',
     loadComponent: () => import('./features/account/components/address-form/address-form.component')
       .then(m => m.AddressFormComponent)
+  },
+  {
+    path: 'credit-card/registration',
+    component: CreditCardFormComponent
+  },
+  {
+    path: 'credit-card/:id',
+    component: CreditCardFormComponent
   },
   {
     path: 'flights',

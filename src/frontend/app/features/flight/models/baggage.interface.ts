@@ -1,6 +1,7 @@
+import { BaggageType } from "./baggage-type.interface";
+
 export interface Baggage {
-  id: number;
-  reservation: number;
-  max_weight: number;
-  price: number;
+  id?: number;
+  baggage_type: BaggageType;
+  reservation?: number;
 } 

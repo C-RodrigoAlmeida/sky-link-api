@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlightService } from '../../services/flight.service';
-import { SeatService } from '../../services/seat.service';
 import { ReservationService } from '../../services/reservation.service';
+import { BaggageService } from '../../services/baggage.service';
 import { Flight } from '../../models/flight.interface';
 import { Seat } from '../../models/seat.interface';
 import { Itinerary } from '../../models/itinerary.interface';
+import { Baggage } from '../../models/baggage.interface';
+import { BaggageType } from '../../models/baggage-type.interface';
+import { BaggageTypeService } from '../../services/baggage-type.service';
 
 @Component({
   selector: 'app-reservation',
@@ -24,13 +27,16 @@ export class ReservationComponent implements OnInit {
   selectedSeat: Seat | null = null;
   includeInsurance = false;
   seatLayout: Seat[][] = [];
+  baggages: Baggage[] = [];
+  baggageTypes: BaggageType[] = []
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private flightService: FlightService,
-    private seatService: SeatService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private baggageTypeService: BaggageTypeService,
+    private baggageService: BaggageService
   ) {}
 
   ngOnInit(): void {
@@ -40,8 +46,26 @@ export class ReservationComponent implements OnInit {
       this.loading = false;
       return;
     }
-
+    this.loadBaggageTypes();
     this.loadFlightDetails(flightId);
+    this.baggages = this.baggageTypes.map(type => ({
+      baggage_type: type
+    }));
+  }
+
+  loadBaggageTypes(): void {
+    this.baggageTypeService.getBaggageTypes().subscribe({
+      next: (fetchedBaggageTypes) => {
+          this.baggageTypes = fetchedBaggageTypes.results;
+          this.loading = false;
+          this.addDefaultBaggage();
+      },
+      error: (error) => {
+        this.error = 'Failed to load baggage types';
+        console.error('Error loading baggage types:', error);
+        this.loading = false;
+      }
+    })
   }
 
   loadFlightDetails(flightId: number): void {
@@ -59,6 +83,29 @@ export class ReservationComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  addDefaultBaggage(): void {
+    const defaultBaggage = {
+      baggage_type: this.baggageTypes[1]
+    }
+    this.baggages.push(defaultBaggage as Baggage);
+  }
+
+  addBaggage(selectedTypeId: string): void {
+    const selectedBaggageType = this.baggageTypes.find(b => b.id === Number(selectedTypeId));
+    
+    if (selectedBaggageType) {
+      const selectedBaggage = {
+        baggage_type: selectedBaggageType
+      };
+      this.baggages.push(selectedBaggage as Baggage);
+      console.log('Baggage added:', selectedBaggage);
+    }
+  } 
+
+  removeBaggage(baggageIndex: number): void {
+    this.baggages.splice(baggageIndex, 1);
   }
 
   generateSeatLayout(seats: Seat[]): Seat[][] {
@@ -83,33 +130,56 @@ export class ReservationComponent implements OnInit {
     let total = Number(this.selectedSeat?.price) || 0;
     if (this.includeInsurance) total += 50;
     
+    // Calculate total baggage price
+    total += this.baggages.reduce((sum, baggage) => {
+      return sum + (baggage.baggage_type ? Number(baggage.baggage_type.price) : 0);
+    }, 0);
+    
     return total;
   }
 
   onConfirmReservation(): void {
     if (!this.selectedSeat) {
-      this.error = 'Please select a seat';
-      return;
+        this.error = 'Please select a seat';
+        return;
     }
 
     const reservation = {
-      seat: this.selectedSeat.id,
-      insurance: this.includeInsurance
+        seat: this.selectedSeat.id,
+        insurance: this.includeInsurance,
     };
 
     this.reservationService.createReservation(reservation).subscribe({
-      next: () => {
-        this.router.navigate(['/profile']);
-      },
-      error: (error) => {
-        this.error = 'Failed to create reservation';
-        console.error('Error creating reservation:', error);
-      }
+        next: (createdReservation) => {
+            this.addBaggageToReservation(createdReservation.id);
+            this.router.navigate(['/profile']);
+        },
+        error: (error) => {
+            this.error = 'Failed to create reservation';
+            console.error('Error creating reservation:', error);
+        }
+    });
+  }
+
+  addBaggageToReservation(reservationId: number): void {
+    this.baggages.forEach(baggage => {
+        const baggageData = {
+            baggage_type: baggage.baggage_type,
+            reservation: reservationId
+        };
+
+        this.baggageService.createBaggage(baggageData).subscribe({
+            next: () => {
+                console.log('Baggage added successfully');
+            },
+            error: (error) => {
+                console.error('Error adding baggage:', error);
+            }
+        });
     });
   }
 
   isTransitionRow(rowIndex: number): boolean {
-    // Assuming the first two rows are First Class, next four are Business, and the rest are Economy
-    return (rowIndex === 2 || rowIndex === 6); // Adjust based on your row indexing
+    return (rowIndex === 2 || rowIndex === 6);
   }
-} 
+}
