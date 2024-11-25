@@ -6,7 +6,7 @@
     <div class="profile-content" *ngIf="!isLoading && !error">
       <section class="user-info">
         <div class="header">
-          <h2 style="margin-top: 20px;">Personal Information</h2>
+          <h3 style="margin-top: 20px;">Personal Information</h3>
           <button class="address-button" *ngIf="!isLoading && addresses !== undefined">
             Edit profile
           </button>
@@ -34,7 +34,7 @@
           </div>
           <div class="info-item">
             <label>Birth Date:</label>
-            <span>{{ user?.birth_date ?? 'Not provided' }}</span>
+            <span>{{ user?.birth_date | date: 'dd/mm/YYYY' }}</span>
           </div>
           <div class="info-item">
             <label>Passport Number:</label>
@@ -49,7 +49,7 @@
 <div class="container" style="padding: 20px;">
   <section class="address-info">
     <div class="header">
-      <h2 style="margin-top: 20px;">Addresses</h2>
+      <h3 style="margin-top: 20px;">Addresses</h3>
       <button class="address-button" (click)="navigateToAddressForm()" *ngIf="!isLoading && addresses !== undefined">
         New address
       </button>

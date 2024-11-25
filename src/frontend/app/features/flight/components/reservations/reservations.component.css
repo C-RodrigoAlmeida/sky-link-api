@@ -1,9 +1,10 @@
 .container {
   max-width: 1100px;
-  margin: 2rem auto;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.flight-table {
+.reservation-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -11,13 +12,14 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  margin-bottom: 2rem;
 }
 
-.flight-table thead {
+.reservation-table thead {
   background-color: #f8fafc;
 }
 
-.flight-table th {
+.reservation-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
@@ -25,31 +27,18 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-.flight-table td {
+.reservation-table td {
   padding: 0.5rem;
   border-bottom: 1px solid #e2e8f0;
   color: #1e293b;
 }
 
-.flight-table tbody tr:hover {
+.reservation-table tbody tr:hover {
   background-color: #f8fafc;
 }
 
-.flight-table tbody tr:last-child td {
+.reservation-table tbody tr:last-child td {
   border-bottom: none;
-}
-
-.select-button {
-  background-color: #2563eb;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.select-button:hover {
-  background-color: #1d4ed8;
 }
 
 .filters-section {
@@ -139,13 +128,6 @@
   box-shadow: 0 0 0 1px #2563eb;
 }
 
-.price-inputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-/* Add these styles */
 .pagination-controls {
   margin-top: 1rem;
   display: flex;

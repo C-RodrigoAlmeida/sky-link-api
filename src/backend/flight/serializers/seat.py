@@ -1,10 +1,17 @@
 from rest_framework import serializers
 from src.backend.flight.models import Seat
-from .reservation import ReservationSerializer
 
-class SeatSerializer(serializers.ModelSerializer):
-    is_occupied = serializers.BooleanField(read_only=True)
+class BaseSeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
-        fields = ['id', 'flight', 'seat_class', 'price', 'code', 'is_occupied']
+        fields = ['id', 'flight', 'seat_class', 'price', 'code']
         read_only_fields = ['id']
+
+class SeatSerializer(BaseSeatSerializer):
+    is_occupied = serializers.BooleanField(read_only=True)
+    class Meta(BaseSeatSerializer.Meta):
+        fields = [*BaseSeatSerializer.Meta.fields, 'is_occupied']
+
+class SeatDetailsSerializer(serializers.ModelSerializer):
+    class Meta(BaseSeatSerializer.Meta):
+        pass

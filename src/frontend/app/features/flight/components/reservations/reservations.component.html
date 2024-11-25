@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="filters-section">
+    <div class="filter-container">
+      <div class="filter-header">
+        <h3>Search Filters</h3>
+        <div class="filter-actions">
+          <button class="filter-button secondary" (click)="resetFilters()">Clear</button>
+          <button class="filter-button primary" (click)="applyFilters()">Search</button>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <div class="filter-item">
+          <label>Reservation ID</label>
+          <input type="text" [(ngModel)]="filters.reservationId" placeholder="Enter Reservation ID">
+        </div>
+        <div class="filter-item">
+          <label>Seat</label>
+          <input type="text" [(ngModel)]="filters.seatCode" placeholder="Enter Seat Code">
+        </div>
+        <div class="filter-item">
+          <label>Insurance</label>
+          <select [(ngModel)]="filters.insurance">
+            <option value="">All</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading">Loading reservations...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <table *ngIf="!loading && reservations.length > 0" class="reservation-table">
+    <thead>
+      <tr>
+        <th>Reservation ID</th>
+        <th>Flight ID</th>
+        <th>Seat</th>
+        <th>Insurance</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reservation of reservations">
+        <td>{{ reservation.id }}</td>
+        <td>{{ reservation.seat.flight }}</td>
+        <td>{{ reservation.seat.code }}</td>
+        <td>{{ reservation.insurance ? 'Yes' : 'No' }}</td>
+        <td>
+          <button 
+            (click)="reservationDetail(reservation)"
+            class="select-button">
+            Details
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && reservations.length === 0">
+    <p>No reservations found.</p>
+  </div>
+
+  <div *ngIf="!loading && totalCount > 0" class="pagination-controls">
+    <pagination-controls
+      (pageChange)="onPageChange($event)"
+      [responsive]="true"
+      [previousLabel]="'Previous'"
+      [nextLabel]="'Next'"
+      [screenReaderPaginationLabel]="'Pagination'"
+      [screenReaderPageLabel]="'page'"
+      [screenReaderCurrentLabel]="'You are on page'">
+    </pagination-controls>
+  </div>
+</div> 

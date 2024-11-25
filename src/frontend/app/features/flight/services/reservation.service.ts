@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
-import { Reservation } from '../models/reservation.interface';
+import { Reservation, RetrieveReservation } from '../models/reservation.interface';
 import { PaginatedResponse } from '../../../core/models/paginated-response.interface';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ export class ReservationService {
 
   constructor(private apiService: ApiService) {}
 
-  getReservations(): Observable<PaginatedResponse<Reservation>> {
-    return this.apiService.get<Reservation>(this.path);
+  getReservations(params: HttpParams): Observable<PaginatedResponse<RetrieveReservation>> {
+    return this.apiService.get<RetrieveReservation>(this.path, params);
   }
 
-  getReservation(id: number): Observable<Reservation> {
-    return this.apiService.getOne<Reservation>(`${this.path}${id}/`);
+  getReservation(id: number): Observable<RetrieveReservation> {
+    return this.apiService.getOne<RetrieveReservation>(`${this.path}${id}/`);
   }
 
   createReservation(reservation: Partial<Reservation>): Observable<Reservation> {

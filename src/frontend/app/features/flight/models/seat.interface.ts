@@ -1,5 +1,3 @@
-import { Reservation } from "./reservation.interface";
-
 export interface Seat {
   id: number;
   flight: number;

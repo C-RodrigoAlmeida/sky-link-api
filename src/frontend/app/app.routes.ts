@@ -3,6 +3,8 @@ import { ProfileComponent } from './features/account/components/profile/profile.
 import { RegisterComponent } from './features/auth/components/register/register.component';
 import { FlightListComponent } from './features/flight/components/flight-list/flight-list.component';
 import { ReservationComponent } from './features/flight/components/reservation/reservation.component';
+import { ReservationsComponent } from './features/flight/components/reservations/reservations.component';
+import { ReservationDetailComponent } from './features/flight/components/reservation-detail/reservation-detail.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +37,14 @@ export const routes: Routes = [
   {
     path: 'flights/:id/reserve',
     component: ReservationComponent
+  },
+  {
+    path: 'reservations',
+    component: ReservationsComponent
+  },
+  {
+    path: 'reservation/:id',
+    component: ReservationDetailComponent
   },
   {
     path: '',
